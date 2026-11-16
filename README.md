@@ -1,58 +1,67 @@
 # 扫雷 · 山林
 
+![Platform](https://img.shields.io/badge/platform-WeChat%20Mini%20Game-07C160?style=flat-square)
+![Render](https://img.shields.io/badge/render-Canvas%202D-2E7D32?style=flat-square)
+![Version](https://img.shields.io/badge/version-v1.1-C8A96E?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-24%20unit%20%2B%2046%20interaction-2E7D32?style=flat-square)
+
 > 微信小游戏 · Canvas 2D · 单机扫雷 · 无需登录
 >
-> **试运行**：仓库根目录额外带一个微信小程序预览壳，可直接在“小程序模式”的开发者工具中编译运行（已验证菜单、经典模式翻开/长按标记）。
-> **正式工程**：`minigame/`，用于小游戏 AppID 发布，游戏内核与预览壳完全共用。
+> A hand-drawn forest Minesweeper for WeChat — zero login, zero backend, all UI rendered with Canvas 2D.
 
-以“山林”自然质感为视觉基调的扫雷小游戏。经典模式无限局，闯关模式 9 级倒计时递进；全部游戏界面由 Canvas 2D 自绘，不使用 WXML / WXSS（根目录预览壳仅用一个 canvas 宿主页面承载，游戏 UI 仍全部是 Canvas）；进度、设置与纪录保存在本机，业务上不依赖后端（仅小程序码使用云函数，失败自动降级）。
+以“山林”自然质感为视觉基调的扫雷小游戏：经典模式无限局，闯关模式 9 级倒计时递进；全部游戏界面由 Canvas 2D 自绘，不使用 WXML / WXSS（根目录预览壳仅用一个 canvas 宿主页面承载）；进度、设置与纪录保存在本机，业务上不依赖后端（仅小程序码使用云函数，失败自动降级）。
 
-- **需求基线**：[docs/PRD.md](docs/PRD.md)
-- **开发者工具排错**：[docs/DEVTOOLS.md](docs/DEVTOOLS.md)
-- **验收说明**：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)
-- **版本**：v1.1（增加棋盘缩放/平移）
-- **运行环境**：正式工程为微信小游戏（`minigame/`）；根目录另有微信小程序预览壳，供开发者工具“小程序模式”直接试玩
+**当前状态**：核心玩法、棋盘缩放/平移、海报与本地存档已完成；24 项单测 + 46 项交互回归通过。真机音频、振动、图片分享与云函数仍需最终复核。
 
----
+<p align="center">
+  <img src="docs/images/menu.png" width="240" alt="模式选择">
+  <img src="docs/images/classic.png" width="240" alt="经典对局">
+  <img src="docs/images/zoom.png" width="240" alt="放大棋盘">
+</p>
 
-## 预览
-
-| 模式选择 | 闯关选关 |
-| --- | --- |
-| <img src="docs/images/menu.png" width="260" alt="模式选择"> | <img src="docs/images/levels.png" width="260" alt="闯关选关"> |
-
-| 经典对局 | 设置面板 |
-| --- | --- |
-| <img src="docs/images/classic.png" width="260" alt="经典对局"> | <img src="docs/images/settings.png" width="260" alt="设置面板"> |
-
-| 放大棋盘（170%） | 高难度 100%（底部缩放条） |
-| --- | --- |
-| <img src="docs/images/zoom.png" width="260" alt="放大棋盘"> | <img src="docs/images/high.png" width="260" alt="高难度缩放条"> |
-
-| 海报预览 | 海报成品（750×1334） |
-| --- | --- |
-| <img src="docs/images/poster-preview.png" width="260" alt="海报预览"> | <img src="docs/images/poster-sample.jpg" width="260" alt="海报成品"> |
-
-**微信开发者工具试运行实拍**（根目录小程序预览壳）：
-
-<img src="docs/images/devtools-running.png" width="520" alt="微信开发者工具运行扫雷·山林">
-
-> 游戏截图来自本地预览环境或开发者工具模拟器；二维码为预览用占位图，真机接入云函数后为真实小程序码。
+**文档**：[产品需求 PRD](docs/PRD.md) · [验收对照](docs/ACCEPTANCE.md) · [开发者工具说明](docs/DEVTOOLS.md)
 
 ---
 
-## 已实现
+## 目录
 
-- **经典模式**：低 9×9/10 雷、中 16×16/40 雷、高 16×30/99 雷；首次默认“中”；难度持久化；支持“随机”（每局等概率抽取）并对局内展示实际难度。
-- **闯关模式**：9 关参数与 PRD 完全一致；进入即倒计时；踩雷/归零失败；通关解锁下一关；进度、最佳用时本地持久化；可重复挑战。
-- **首点安全**：首次翻开时布雷，排除首点及其 8 邻域，两种情况均有兜底。
-- **手势**：短按 <300ms 翻开；长按 ≥300ms 循环标记（安全 → 疑似 → 地雷 → 隐藏）；移出格子取消；长按轻振动；按钮与棋盘分区处理。
-- **缩放 / 平移**：底部缩放条（− / 百分比 / + / 适应）+ 双指捏合；放大后单指拖动棋盘查看，拖动/缩放不会误触翻开；缩放条独立于棋盘，不遮挡格子；100% 为整盘适配，最大约 56pt/格。
-- **四态标记视觉**：叶片 / 问号 / 雷形 / 隐藏，形状差异优先；顶部只统计“地雷标记”。
-- **计时**：经典首点后计时；闯关立即倒计时；最后 10 秒数字脉冲放大 + 滴答声；切后台、打开设置面板时暂停。
-- **音效**：翻开、标记、取消标记、失败、通关、滴答；本地 WAV；实例复用；`touchstart` 解锁；中断恢复；全局开关。
-- **分享海报**：750×1334 离屏绘制；状态文案 + 小程序码（≥280px）；保存相册；`wx.showShareImageMenu` 不可用时自动保存降级；云函数不可用时输出无二维码海报。
-- **进入路径**：链接/搜索/二维码/分享卡片统一落地模式选择页；识别 `scene` 的 `c` / `pN` 并轻提示；朋友圈单页（场景值 1155）展示引导且不依赖完整存储。
+- [项目形态](#项目形态)
+- [亮点](#亮点)
+- [快速开始](#快速开始)
+- [玩法与交互](#玩法与交互)
+- [技术架构](#技术架构)
+- [项目结构](#项目结构)
+- [测试与验收](#测试与验收)
+- [截图](#截图)
+- [已知限制](#已知限制)
+- [License](#license)
+
+---
+
+## 项目形态
+
+仓库里同时保留两种运行形态，共用同一套游戏内核：
+
+| 形态 | 目录 | 配置 | 用途 |
+| --- | --- | --- | --- |
+| **微信小程序预览壳** | 仓库根目录 | `compileType: "miniprogram"`，`touristappid` | 在“小程序模式”的微信开发者工具里直接试玩，无需小游戏 AppID |
+| **正式小游戏工程** | [`minigame/`](minigame/) | `compileType: "game"`，需小游戏 AppID | 发布、真机调试、分享、云函数 |
+
+> 预览壳只负责承载 Canvas，所有游戏界面仍然是 Canvas；正式发布请使用 `minigame/`。
+
+---
+
+## 亮点
+
+- **经典模式**：低 9×9/10 雷、中 16×16/40 雷、高 16×30/99 雷；首次默认“中”；难度持久化；支持“随机”并展示本局实际难度。
+- **闯关模式**：9 关参数与 PRD 一致；进入即倒计时；踩雷/归零失败；通关解锁下一关；进度与最佳用时本地保存。
+- **首点安全**：首次翻开时布雷，排除首点及其 8 邻域；可布雷格不足时只排除首点，保证首点不是雷。
+- **短按 / 长按**：短按翻开；长按 300ms 循环标记（安全 → 疑似 → 地雷 → 隐藏）；长按轻振动；按钮与棋盘分区处理。
+- **缩放 / 平移**：底部缩放条（`− / 百分比 / + / 适应`）+ 双指捏合；放大后单指拖动查看；拖动/缩放不误触翻开；缩放条独立于棋盘，不遮挡格子。
+- **四态标记**：叶片 / 问号 / 雷形 / 隐藏，形状差异优先；顶部只统计“地雷标记”。
+- **计时与音效**：经典首点后计时，闯关立即倒计时；最后 10 秒脉冲 + 滴答；切后台、打开设置时暂停；本地 WAV，实例复用。
+- **分享海报**：750×1334 离屏绘制，状态文案 + 小程序码；保存相册；图片分享 API 不可用时自动降级保存；云函数失败时输出无二维码海报。
+- **进入路径**：链接 / 搜索 / 二维码 / 分享卡片统一落地模式选择页；识别 `scene` 的 `c` / `pN`；朋友圈单页（1155）使用内存态并展示引导。
 - **容错**：存储损坏、清缓存、非法启动参数均不崩溃；无登录、无排行榜、无内购。
 
 ---
@@ -61,177 +70,104 @@
 
 ### 1. 本地浏览器预览（不需要微信开发者工具）
 
-预览层 `preview/wx-mock.js` 模拟了本项目用到的 `wx` API，直接复用 `minigame/js/` 下的同一份游戏代码。
+预览层 [`preview/wx-mock.js`](preview/wx-mock.js) 模拟了本项目用到的 `wx` API，直接复用 [`minigame/js/`](minigame/js/) 的同一份游戏代码。
 
 ```bash
 # 生成预览包
 node tools/build-preview.js
 
-# 推荐：起一个本地静态服务（音频、Canvas 临时文件在 http 下更稳）
+# 启动本地静态服务
 node tools/serve.js
 # 打开 http://127.0.0.1:8787/preview/
 ```
 
-也可以直接用 Chrome 打开 `preview/index.html`（`file://` 下也可运行；音频自动播放策略因浏览器而异）。
+也可以直接用 Chrome 打开 [`preview/index.html`](preview/index.html)。`file://` 下音频自动播放策略因浏览器而异，推荐用本地服务。
 
-**调试参数**（可组合）：
+调试参数（组合使用）：
 
 | 参数 | 作用 |
 | --- | --- |
-| `?dev=1` | 右侧显示调试状态切换面板与操作提示 |
-| `?debug=mode` / `levels` / `classic` / `classicHigh` / `classicZoom` | 直接进入模式选择 / 选关 / 经典中难度 / 经典高难度 / 经典放大演示 |
-| `?debug=level:5` / `level:9` / `levelPulse` | 直接进入对应关卡 / 最后 10 秒脉冲演示 |
-| `?debug=settings` / `classicEnd` / `classicLose` / `levelFail` / `levelSuccess` | 打开设置或对应结算状态 |
+| `?dev=1` | 显示调试面板与操作提示 |
+| `?debug=classic` / `classicHigh` / `classicZoom` | 经典中难度 / 高难度 / 放大演示 |
+| `?debug=levels` / `level:5` / `levelPulse` | 选关 / 第 5 关 / 最后 10 秒脉冲 |
+| `?debug=settings` / `classicEnd` / `classicLose` / `levelFail` / `levelSuccess` | 设置或对应结算状态 |
 | `?debug=poster` / `posterClassic` | 生成闯关 / 经典海报 |
-| `?qr=1` | 模拟云函数返回小程序码（预览用假码） |
-| `?scene=1155` | 模拟朋友圈单页模式 |
-| `?share=0` | 模拟 `wx.showShareImageMenu` 不可用，验证保存降级 |
-| `?w=375&h=667` | 预览指定逻辑分辨率（需同时设置浏览器视口） |
-| `?qrscene=p5` | 模拟扫码进入，模式选择页提示“好友通过了第 5 关” |
+| `?qr=1` / `?share=0` / `?scene=1155` | 模拟二维码 / 分享降级 / 朋友圈单页 |
+| `?qrscene=p5` | 模拟扫码进入，提示“好友通过了第 5 关” |
 
-### 2. 微信开发者工具（两种运行方式）
+### 2. 微信开发者工具直接试玩（根目录预览壳）
 
-#### 2.1 当前开发者工具直接试运行：根目录小程序预览壳（推荐先用）
+1. 用微信开发者工具打开**仓库根目录**；
+2. 顶部保持“小程序模式”，点击「编译」；
+3. 模拟器出现“扫雷 · 山林”模式选择页即可试玩。
 
-仓库根目录现在是一个**微信小程序预览壳**，只包含一个承载 Canvas 的页面，游戏代码复用 [minigame/js/](minigame/js/)。它专门解决“开发者工具处于小程序模式、没有小游戏 AppID”时无法试玩的问题。
+无需新建项目、无需小游戏 AppID。根目录 [`project.config.json`](project.config.json) 已配置 `compileType: "miniprogram"` 和 `touristappid`。
 
-- [project.config.json](project.config.json)：`compileType: "miniprogram"`，`appid: "touristappid"`
-- [app.json](app.json) / [pages/index/index.js](pages/index/index.js)：小程序页面与 Canvas 宿主
-- 已实测：开发者工具模拟器能显示模式选择页，经典模式可翻开格子、长按标记
+### 3. 正式小游戏工程
 
-操作：
+1. 准备**小游戏类型** AppID，替换 [`minigame/project.config.json`](minigame/project.config.json) 中的 `appid`；
+2. 开发者工具「新建项目 → 小游戏」，目录选 `minigame/`，不要勾选小程序模式；
+3. 编译。详细排错见 [docs/DEVTOOLS.md](docs/DEVTOOLS.md)。
 
-1. 开发者工具打开**仓库根目录**（就是当前项目）；如果仍停留在旧的错误项目，直接点一次「编译」即可。
-2. 确认顶部显示小程序模式且不再出现 `app.json is not found`。
-3. 模拟器中即可试玩；无需新建项目、无需小游戏 AppID。
-
-> 这是开发预览壳，不是发布形态；正式小游戏仍使用 `minigame/`。
-
-#### 2.2 正式小游戏工程：minigame/
-
-> 小游戏工程根目录是 [minigame/](minigame/)，需要**小游戏 AppID**。开发者工具必须按「小游戏项目」新建，不能是小程序模式。
-
-1. 准备小游戏类型 AppID，并将 [minigame/project.config.json](minigame/project.config.json) 的 `appid` 替换为它。
-2. 开发者工具「新建项目 → **小游戏**」，目录选择 **`minigame/`**；不要勾选“小程序模式”。
-3. 编译；云函数可选，不部署时海报自动降级。
-4. 详细模式切换/AppID 排查见 [docs/DEVTOOLS.md](docs/DEVTOOLS.md)。
-
-### 3. 云函数（小程序码，可选）
+### 4. 云函数（可选）
 
 ```bash
 cd minigame/cloudfunctions/getQrCode
 npm install
 ```
 
-1. 在微信开发者工具中开通云开发环境。
-2. 将环境 ID 填入 [minigame/js/config.js](minigame/js/config.js) 的 `CLOUD.env`；留空则使用默认环境。若自动识别开发版/体验版失败，可设置 `CLOUD.envVersion` 为 `develop` / `trial` / `release` 强制指定。
-3. 右键 `minigame/cloudfunctions/getQrCode` →「上传并部署：云端安装依赖」。
-4. 云函数已通过 `minigame/cloudfunctions/getQrCode/config.json` 声明 `wxacode.getUnlimited` 权限；前端会按开发版/体验版/正式版传递 `envVersion`。
-5. 真机上生成一次海报验证二维码；若失败，游戏主体与无二维码海报仍可用。
-
-### 4. 分享卡片
-
-- 正式小游戏使用 `wx.onShareAppMessage`；根目录小程序预览壳使用页面 `onShareAppMessage`，两者最终都回到模式选择页（预览壳为 `pages/index/index`）。
-- 卡片图为运行时绘制的 500×400 本地图片；`touristappid` 游客模式下分享能力受限，正式分享需小游戏 AppID。
+在微信开发者工具中开通云开发，将环境 ID 填入 [`minigame/js/config.js`](minigame/js/config.js) 的 `CLOUD.env`，右键云函数目录选择「上传并部署：云端安装依赖」。不部署时海报会自动降级为无二维码版本。
 
 ---
 
-## 目录
+## 玩法与交互
 
-```
-app.js / app.json / app.wxss  根目录小程序预览壳（开发者工具直接试运行）
-pages/index/                  Canvas 宿主页面（仅此页面用 WXML/WXSS）
-project.config.json          根目录项目配置（compileType: miniprogram）
-sitemap.json
+| 操作 | 行为 |
+| --- | --- |
+| **短按** | 按下至抬起 <300ms，且未移出格子 → 翻开；已标记格也会翻开（若是雷则失败并清除标记） |
+| **长按** | ≥300ms → 标记循环 `隐藏 → 安全 → 疑似 → 地雷 → 隐藏`，触发时轻振动（开关开启） |
+| **双指捏合** | 围绕两指中点缩放棋盘，可同时双指平移 |
+| **放大后拖动** | 单指移动超过约 7pt → 平移棋盘；松手不翻开 |
+| **底部缩放条** | `−` / `百分比` / `+` / `适应`；点百分比或「适应」回到 100% |
 
-minigame/                    ★ 正式小游戏工程根（发布用）
-  game.js                   小游戏入口
-  game.json                 小游戏配置（竖屏、隐藏状态栏）
-  project.config.json       开发者工具项目配置（compileType: game）
-  js/
-    config.js               难度、关卡外观常量、颜色、字体、时间阈值
-    levels.js               闯关参数、时间格式化、进度与最佳纪录
-    storage.js              本地持久化与容错（含预览/1155 内存模式）
-    game-core.js            布雷、首点安全、BFS 展开、标记、胜负
-    renderer.js             Canvas 2D 分层渲染、山林视觉、脏区更新
-    input.js                短按 / 长按 300ms / 移出取消 / 多指取消
-    audio.js                音效实例复用、解锁、开关、中断恢复
-    share.js                750×1334 海报、二维码、保存、分享降级、分享卡片
-    launch.js               启动参数与 scene 解析
-    main.js                 状态机、计时、结算、海报流程、调试桩
-  audio/                    本地合成的 WAV 音效
-  cloudfunctions/getQrCode/ 小程序码云函数（含 openapi 权限声明）
-
-docs/                       需求、验收、开发者工具排错
-  PRD.md
-  ACCEPTANCE.md
-  DEVTOOLS.md
-  images/                   含开发者工具运行实拍 devtools-running.png
-preview/                    浏览器预览（wx API mock + 生成包）
-tests/run.js                核心逻辑与存储单测（24 项）
-tools/
-  gen-audio.js              重新生成 WAV 音效
-  build-preview.js          生成 preview/bundle.js
-  serve.js                  本地静态预览服务
-  interact.js               CDP 真实交互回归（46 项断言）
-  capture.js                指定状态截图
-  eval.js                   预览页任意表达式调试
-```
-
-根目录小程序壳只负责承载 Canvas，所有游戏界面仍是 Canvas；`minigame/` 保持纯小游戏工程，发布时不受预览壳影响。预览/测试/文档不会被根目录小程序的 `packOptions.ignore` 打包。
-
----
-
-## 规则与交互要点
-
-- **短按**：按下至抬起 <300ms，且手指未移出该格 → 翻开；已标记格也会翻开（若是雷则失败并清除标记）。
-- **长按**：≥300ms → 标记循环 `隐藏 → 安全 → 疑似 → 地雷 → 隐藏`，触发时轻振（开关开启时）。
-- **取消**：移出格子边界 / 多指触摸 / 触摸取消 → 不执行翻开与标记。
-- **首点安全**：点击后才布雷，排除首点 3×3 邻域；若可布雷格不足则只排除首点，保证首点不是雷。
+- **取消**：100% 时移出格子取消；放大后移动超过阈值进入拖动，同时取消本次短按/长按。
+- **首点安全**：点击后才布雷，排除首点 3×3 邻域；若可布雷格不足则只排除首点。
 - **展开**：零邻雷格使用 BFS 队列展开；已标记格不会被自动展开吞掉。
-- **计时**：经典模式首次翻开开始；闯关进入即开始；设置面板打开、App 切后台时暂停。
-- **结算**：失败展示全部地雷；结算面板可关闭以查看棋盘，点击棋盘可重新打开结算；胜利自动为全部地雷补旗。
+- **计时**：经典模式首次翻开开始；闯关进入即开始；设置面板打开、App 切后台、海报预览时暂停。
+- **结算**：失败展示全部地雷；结算面板可关闭查看棋盘，点击棋盘可重新打开；胜利自动为全部地雷补旗。
 
 ---
 
-## 技术实现
+## 技术架构
 
 ### 渲染
 
 - 主 Canvas + 场景层（`sceneCanvas`）+ 背景层（`bgCanvas`）。
 - 背景（山体、松林、雾气、月光、颗粒、暗角）只在尺寸变化时重建。
 - 棋盘仅在格子状态变化时重绘对应格子；HUD 计时区域使用背景局部还原后重绘；动画期间只重绘参与动画的格子。
+- 缩放/平移通过固定棋盘视口 + 内容偏移实现，视口外裁剪；滚动时只绘制可见格子。
 - `requestAnimationFrame` 驱动，无持续整屏重绘；菜单页为静态画面。
 - 全 Canvas 自绘：模式选择、选关、对局、设置、结算、海报预览均为 Canvas 页面。
 
 ### 输入
 
-- `touchstart` 记录时间、坐标、格子；`touchmove` 越界取消；`touchend` 判定短按。
-- 长按定时器 300ms；定时器触发后 `touchend` 不再翻开；主线程繁忙导致延迟时在 `touchend` 兜底判定。
-- 按钮与棋盘分区命中；浮层使用独立命中层，避免穿透。
-- 数据坐标统一为 `cells[row][col]`。
+- `touchstart` 记录时间、坐标、格子；`touchend` 判定短按；长按定时器 300ms。
+- 放大后单指移动超过约 7pt 进入平移；双指捏合围绕中点缩放，同时支持双指平移。
+- 按钮、缩放条、棋盘、浮层使用独立命中区，避免穿透。
+- 数据坐标统一为 `cells[row][col]`；缩放/平移只改变视口，不改变游戏状态。
 
-### 计时与暂停
+### 核心逻辑
 
-- 以帧间隔累计 `elapsedMs`，避免直接依赖系统时间跳变。
-- 闯关倒计时进入即运行；`elapsed >= time * 1000` 判超时。
-- 设置面板打开、App 隐藏、海报预览时暂停，返回后继续。
+- Fisher–Yates 布雷；首点排除 3×3 邻域。
+- BFS 展开零邻雷区域；标记格不会被自动展开覆盖。
+- 胜负、踩雷、计时、闯关解锁均由 `game-core.js` + `main.js` 状态机驱动。
 
-### 音效
+### 音效与分享
 
 - 每种音效只创建一个 `InnerAudioContext`，`useWebAudioImplement: true`，本地 WAV。
-- `touchstart` 中调用 `audio.unlock()` 播放近静音短音完成解锁。
-- 音效开关持久化；静音仍可继续游戏；音频中断结束后恢复。
-- 音效资源可用 `node tools/gen-audio.js` 重新生成。
-
-### 海报与二维码
-
-- 750×1334 离屏 Canvas 绘制：品牌标题、状态文案（【】高亮）、数据卡、二维码卡、页脚。
-- 二维码 300×300；云函数 `wxacode.getUnlimited` 返回 base64，前端写临时文件或 data URI 后 `drawImage`。
-- 海报导出同时兼容小游戏 `Canvas.toTempFilePath` 与小程序 `wx.canvasToTempFilePath`，避免小游戏环境无法保存海报。
-- 云函数不可用 / 超时 6s：绘制“小程序码暂不可用”占位，海报仍可保存/分享。
-- 保存相册处理相册授权；图片分享失败或 API 不存在时自动保存相册并提示手动发送。
-- 分享卡片图在启动后异步绘制，避免额外静态资源。
+- `touchstart` 播放近静音短音完成解锁；音效开关持久化；中断结束后恢复。
+- 750×1334 离屏 Canvas 绘制海报；兼容小游戏 `Canvas.toTempFilePath` 与小程序 `wx.canvasToTempFilePath`。
+- 云函数 `wxacode.getUnlimited` 返回小程序码；超时 6s 或无云环境时绘制占位并继续保存/分享。
 
 ### 数据
 
@@ -246,72 +182,95 @@ tools/
 
 ---
 
-## 测试
+## 项目结构
+
+```text
+.
+├── app.js / app.json / app.wxss   # 根目录小程序预览壳
+├── pages/index/                   # Canvas 宿主页（仅此页面用 WXML/WXSS）
+├── project.config.json            # 预览壳：compileType=miniprogram
+├── sitemap.json
+│
+├── minigame/                      # ★ 正式小游戏工程（发布用）
+│   ├── game.js / game.json
+│   ├── project.config.json        # compileType=game
+│   ├── js/
+│   │   ├── config.js              # 难度、关卡外观、颜色、字体、阈值
+│   │   ├── levels.js              # 9 关参数、进度、最佳纪录
+│   │   ├── game-core.js           # 布雷、首点安全、BFS、标记、胜负
+│   │   ├── renderer.js            # 分层渲染、山林视觉、缩放/平移、脏区
+│   │   ├── input.js               # 短按/长按/拖动/双指捏合
+│   │   ├── audio.js               # WAV 音效实例复用与解锁
+│   │   ├── share.js               # 750×1334 海报、二维码、保存/分享降级
+│   │   ├── launch.js              # 启动参数与 scene 解析
+│   │   ├── storage.js             # 本地持久化与容错
+│   │   └── main.js                # 状态机、计时、结算、海报流程
+│   ├── audio/                     # 本地合成 WAV 音效
+│   └── cloudfunctions/getQrCode/  # 小程序码云函数（可选）
+│
+├── docs/                          # PRD、验收、开发者工具说明、截图
+├── preview/                       # 浏览器预览（wx API mock + bundle）
+├── tests/run.js                   # 核心逻辑 / 存储单测
+├── tools/                         # 预览构建、交互回归、截图、音频生成
+├── raw/                           # 原始 PRD / README 资料
+├── wiki/                          # 项目知识库
+└── plugins/kb-cockpit/            # 知识库侧栏插件（非游戏运行文件）
+```
+
+根目录预览壳只负责承载 Canvas，`minigame/` 保持纯小游戏工程；预览、测试、文档、`raw/`、`wiki/`、`plugins/` 不会被根目录小程序的 `packOptions.ignore` 打包进小游戏包。
+
+---
+
+## 测试与验收
 
 ```bash
 # 24 项纯逻辑 / 存储单测（Node，无依赖）
 npm test
 
-# 46 项浏览器真实交互回归（需要 Chrome，macOS 默认路径）
+# 46 项浏览器真实交互回归（需要 Chrome）
 npm run test:interaction
 
 # 代码更新后重新生成预览包
 npm run preview:build
 ```
 
-交互回归覆盖：
+交互回归覆盖：短按翻开、首点后计时、长按标记、100% 移出取消、缩放条放大/适应、放大后拖动平移、拖动不误触、双指捏合、按钮视觉、设置面板暂停倒计时、选关、结算关闭/重开、海报生成/保存/无二维码降级、分享降级、二维码海报、扫码 scene 提示、1155 模式。
 
-- 短按翻开、首点后计时；
-- 长按 300ms 标记、移出取消；
-- 缩放条放大/适应、放大后拖动平移、拖动不误触翻开、双指捏合；
-- 按钮按压视觉、设置面板打开/关闭；
-- 音效开关、设置面板暂停倒计时；
-- 选关、关卡倒计时推进；
-- 结算面板关闭 / 点击棋盘重新打开；
-- 海报生成、保存、无二维码降级、图片分享不可用时的保存降级；
-- 云函数二维码海报路径；
-- 扫码 scene 提示、朋友圈单页 1155 模式。
-
-截图工具：
-
-```bash
-node tools/capture.js \
-  --url "file://$(pwd)/preview/index.html" \
-  --debug classic --out /tmp/classic.png
-```
-
-截图脚本默认使用 macOS Chrome 路径（`/Applications/Google Chrome.app/...`）；其他系统请修改 `tools/capture.js` 与 `tools/interact.js` 顶部的 `CHROME` 常量。
+完整验收对照：[docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)。
 
 ---
 
-## 入口与发布配置
+## 截图
 
-以下配置在微信公众平台完成，无法由代码替代：
+| 模式选择 | 闯关选关 | 设置面板 |
+| --- | --- | --- |
+| <img src="docs/images/menu.png" width="220" alt="模式选择"> | <img src="docs/images/levels.png" width="220" alt="闯关选关"> | <img src="docs/images/settings.png" width="220" alt="设置面板"> |
 
-1. **搜索进入**：MP 平台配置“功能直达 / 搜索关键词”，建议召回词：`扫雷`、`单机扫雷`、`山林扫雷`、`经典扫雷`。
-2. **链接进入**：MP 平台「工具 → 生成 URL Scheme / URL Link」，路径指向小游戏入口启动页，可附带来源参数（如 `from=link`）。所有入口都会落地模式选择页。
-3. **二维码**：海报中的小程序码由云函数生成，`scene` 为 `c`（经典）或 `pN`（第 N 关）；前端读取 `query.scene` 后在模式选择页轻提示。
-4. **分享卡片**：需真实 AppID；顶部菜单转发落地模式选择页。
-5. **朋友圈**：通过“保存到相册”后用户手动发布；代码不直接唤起朋友圈发布。
+| 高难度 100% | 放大 170% | 海报成品 |
+| --- | --- | --- |
+| <img src="docs/images/high.png" width="220" alt="高难度"> | <img src="docs/images/zoom.png" width="220" alt="放大棋盘"> | <img src="docs/images/poster-sample.jpg" width="220" alt="海报成品"> |
+
+<p align="center">
+  <strong>微信开发者工具小程序预览壳</strong><br>
+  <img src="docs/images/devtools-running.png" width="480" alt="微信开发者工具运行扫雷·山林">
+</p>
 
 ---
 
-## 已知限制与真机待验证
+## 已知限制
 
-1. **高难度格子物理尺寸**：PRD 要求“16×30 格子不小于 28–30px”，但 16 列在 375–390pt 宽屏幕上即使零边距也无法达到 28pt。
-   - 实现为优先压缩间距、再适配屏幕；加入底部缩放条后 390×844 下 16×16 约 20.8pt/格、16×30 约 17.9pt/格；375×667 下 16×30 约 13–14pt/格。
-   - 物理像素（DPR 2–3）远大于 28px，但按 CSS pt 计未达到 PRD 数值；这是已记录的物理约束偏差，详见 [PRD §14.1](docs/PRD.md#14-实现判定与偏差记录开发基线补充)。
-   - **v1.1 已加入缩放/平移**：100% 时仍是整盘适配尺寸，点击困难时可放大到约 56pt/格（上限按屏幕自适应），并拖动查看；缩放条位于棋盘下方，不遮挡格子。
-2. **图片分享 API**：`wx.showShareImageMenu` 在目标基础库/机型上的支持需真机验证；失败时已自动保存相册并提示。
+1. **高难度格子 100% 尺寸**：16 列在 375–390pt 宽屏幕上无法同时满足“16 列可见 + 每格 ≥28pt”。390×844 下 16×16 约 20.8pt、16×30 约 17.9pt；375×667 下 16×30 约 13–14pt。v1.1 已支持放大到约 56pt/格并拖动查看，100% 仍保留整盘视野。
+2. **真机能力**：图片分享 API、保存相册、iOS 静音开关、振动强度、首次音效解锁需真机复核；失败路径已做降级。
 3. **云函数与二维码**：需真实 AppID 与云环境；开发版/体验版/正式版 `envVersion` 需真机确认。
-4. **振动与音频**：iOS 静音开关、振动强度、首次解锁时机需真机复核。
-5. **字体**：海报与界面使用宋体/苹方/CJK 字体栈；Android 字体回退可能与截图略有差异。
-6. **性能**：已在桌面 Chrome 和逻辑层压测，未在低端真机做帧率采样；16×30 首次全量绘制与脏区更新均为可接受范围。
+4. **游客模式限制**：根目录预览壳使用 `touristappid`，分享、相册、云函数等能力受限，仅用于开发试玩。
+5. **性能**：已在桌面 Chrome 与逻辑层压测，未在低端真机做帧率采样；16×30 首次全量绘制与脏区更新处于可接受范围。
 
 ---
 
-## 文档
+## License
 
-- [docs/PRD.md](docs/PRD.md)：整理后的产品需求、实现判定与偏差记录。
-- [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)：PRD 第 13 章 12 条验收标准的逐项对照与证据。
-- 截图：`docs/images/`。
+当前仓库暂未声明开源许可证。如需公开分发或商用，请先补充 `LICENSE`。
+
+---
+
+> 游戏截图来自本地预览环境或微信开发者工具模拟器；二维码为预览用占位图，真机接入云函数后为真实小程序码。
