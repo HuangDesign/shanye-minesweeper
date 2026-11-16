@@ -1,0 +1,15 @@
+{
+  "name": "shanye-minesweeper",
+  "version": "1.1.0",
+  "private": true,
+  "description": "扫雷·山林 —— 微信小游戏（Canvas 2D，单机，无需登录）",
+  "scripts": {
+    "test": "node tests/run.js",
+    "test:interaction": "node tools/interact.js",
+    "preview:build": "node tools/build-preview.js",
+    "preview:serve": "node tools/serve.js",
+    "audio": "node tools/gen-audio.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

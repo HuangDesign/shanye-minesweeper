@@ -1,0 +1,85 @@
+{
+  "appid": "touristappid",
+  "projectname": "shanye-devtools-preview",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "",
+  "libVersion": "3.17.6",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": false,
+    "minified": false,
+    "urlCheck": false,
+    "packNpmManually": false,
+    "ignoreDevUnusedFiles": false
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "folder",
+        "value": "preview"
+      },
+      {
+        "type": "folder",
+        "value": "tests"
+      },
+      {
+        "type": "folder",
+        "value": "tools"
+      },
+      {
+        "type": "folder",
+        "value": "plugins"
+      },
+      {
+        "type": "folder",
+        "value": "raw"
+      },
+      {
+        "type": "folder",
+        "value": "wiki"
+      },
+      {
+        "type": "folder",
+        "value": "minigame/cloudfunctions"
+      },
+      {
+        "type": "file",
+        "value": "README.md"
+      },
+      {
+        "type": "file",
+        "value": "package.json"
+      },
+      {
+        "type": "file",
+        "value": ".gitignore"
+      },
+      {
+        "type": "file",
+        "value": "minigame/project.config.json"
+      },
+      {
+        "type": "file",
+        "value": "minigame/game.js"
+      },
+      {
+        "type": "file",
+        "value": "minigame/game.json"
+      },
+      {
+        "type": "file",
+        "value": "project.private.config.json"
+      }
+    ],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

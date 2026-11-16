@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Knowledge cockpit">
+  <rect width="64" height="64" rx="14" fill="#14120d"/>
+  <g stroke="#d9bc7a" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".85">
+    <path d="M32 16v14M32 30 18 46M32 30l14 16"/>
+  </g>
+  <circle cx="32" cy="15" r="6" fill="#f4e3b4"/>
+  <circle cx="17" cy="47" r="5" fill="#d9bc7a"/>
+  <circle cx="47" cy="47" r="5" fill="#d9bc7a"/>
+  <circle cx="32" cy="31" r="3.2" fill="#a98f5c"/>
+</svg>

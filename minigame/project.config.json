@@ -1,0 +1,19 @@
+{
+  "appid": "touristappid",
+  "projectname": "shanye-minesweeper",
+  "compileType": "game",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "libVersion": "3.17.6",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "minified": false,
+    "urlCheck": false,
+    "packNpmManually": false,
+    "ignoreDevUnusedFiles": false
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

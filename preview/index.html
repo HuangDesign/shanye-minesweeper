@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>扫雷·山林 · 本地预览</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #050a07;
+      overflow: hidden;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stage {
+      position: relative;
+      line-height: 0;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+    }
+    #game {
+      display: block;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #0d1712;
+      cursor: pointer;
+    }
+    #devbar {
+      position: fixed;
+      left: calc(50% + 207px);
+      bottom: 24px;
+      z-index: 10;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(8, 14, 10, 0.92);
+      border: 1px solid rgba(217, 192, 138, 0.25);
+      backdrop-filter: blur(8px);
+    }
+    #devbar.visible { display: flex; }
+    #devbar button {
+      font: 11px/1 "PingFang SC", sans-serif;
+      color: #ece5d3;
+      background: rgba(70, 85, 62, 0.55);
+      border: 1px solid rgba(217, 192, 138, 0.18);
+      border-radius: 7px;
+      padding: 6px 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+    #devbar button:hover { background: rgba(100, 120, 88, 0.65); }
+    #hint {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      z-index: 10;
+      display: none;
+      max-width: 220px;
+      font-size: 10px;
+      line-height: 1.7;
+      color: rgba(236, 229, 211, 0.5);
+      background: rgba(8, 14, 10, 0.8);
+      border: 1px solid rgba(217, 192, 138, 0.15);
+      border-radius: 10px;
+      padding: 8px 10px;
+      pointer-events: none;
+    }
+    #hint.visible { display: block; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="game"></canvas>
+  </div>
+
+  <div id="devbar">
+    <button data-jump="mode">模式选择</button>
+    <button data-jump="levels">闯关选关</button>
+    <button data-jump="classic">经典对局</button>
+    <button data-jump="classicHigh">经典高难度</button>
+    <button data-jump="level:5">第 5 关</button>
+    <button data-jump="level:9">第 9 关</button>
+    <button data-jump="levelPulse">最后 10 秒</button>
+    <button data-jump="settings">设置面板</button>
+    <button data-jump="classicEnd">经典通关</button>
+    <button data-jump="classicLose">经典失败</button>
+    <button data-jump="levelFail">闯关失败</button>
+    <button data-jump="levelSuccess">闯关成功</button>
+    <button data-jump="poster">分享海报</button>
+  </div>
+
+  <div id="hint">
+    预览提示：短按翻开，长按 300ms 标记。<br>
+    加 <code>?qr=1</code> 模拟云函数二维码；<code>?dev=1</code> 显示状态切换面板。
+  </div>
+
+  <script src="wx-mock.js"></script>
+  <script src="bundle.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('dev') === '1') {
+        document.getElementById('devbar').classList.add('visible');
+        document.getElementById('hint').classList.add('visible');
+        document.querySelectorAll('#devbar button').forEach(function (button) {
+          button.addEventListener('click', function () {
+            if (window.wx && window.wx.__game) {
+              window.wx.__game.debugJump(button.getAttribute('data-jump'));
+            }
+          });
+        });
+      }
+      // 让本地预览更容易在桌面浏览器中看到完整画面
+      if (window.innerWidth < 420 || window.innerHeight < 700) {
+        document.getElementById('stage').style.transformOrigin = 'center center';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Bundle patch: one row loads the Host half (index.js), which serves the
+# /kb-cockpit/api routes; `dsh.client` in package.json loads client.js in the page.
+- insert:
+    - id: kb-cockpit
+      name: 'dsh-kb-cockpit'
+      config:
+        # Knowledge-base root. Omit to use the workspace that contains plugins/.
+        # root: '/absolute/path/to/workspace'
+        prices:
+          # CNY per 1M tokens, used only for the 「估算」 spend tile.
+          inputMiss: 2
+          cacheHit: 0.2
+          output: 3
+          currency: '¥'
