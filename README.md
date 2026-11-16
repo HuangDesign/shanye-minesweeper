@@ -2,9 +2,10 @@
 
 ![Platform](https://img.shields.io/badge/platform-WeChat%20Mini%20Game-07C160?style=flat-square)
 ![Render](https://img.shields.io/badge/render-Canvas%202D-2E7D32?style=flat-square)
-![Version](https://img.shields.io/badge/version-v1.1-C8A96E?style=flat-square)
+![Version](https://img.shields.io/badge/version-v1.1.0-C8A96E?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-24%20unit%20%2B%2046%20interaction-2E7D32?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-2E7D32?style=flat-square)
+![Release](https://img.shields.io/github/v/release/HuangDesign/shanye-minesweeper?style=flat-square)
 
 > 微信小游戏 · Canvas 2D · 单机扫雷 · 无需登录
 >
@@ -20,7 +21,9 @@
   <img src="docs/images/zoom.png" width="240" alt="放大棋盘">
 </p>
 
-**文档**：[产品需求 PRD](docs/PRD.md) · [验收对照](docs/ACCEPTANCE.md) · [开发者工具说明](docs/DEVTOOLS.md)
+**当前版本**：[v1.1.0](https://github.com/HuangDesign/shanye-minesweeper/releases/tag/v1.1.0)（2026-11-16）
+
+**文档**：[产品需求 PRD](docs/PRD.md) · [验收对照](docs/ACCEPTANCE.md) · [开发者工具说明](docs/DEVTOOLS.md) · [版本记录](CHANGELOG.md)
 
 ---
 
@@ -35,6 +38,8 @@
 - [测试与验收](#测试与验收)
 - [截图](#截图)
 - [已知限制](#已知限制)
+- [版本记录](#版本记录)
+- [参与贡献](#参与贡献)
 - [License](#license)
 
 ---
@@ -267,6 +272,14 @@ npm run preview:build
 5. **性能**：已在桌面 Chrome 与逻辑层压测，未在低端真机做帧率采样；16×30 首次全量绘制与脏区更新处于可接受范围。
 
 ---
+
+## 版本记录
+
+当前版本 **v1.1.0**（2026-11-16），首个公开发布。完整变更见 [CHANGELOG.md](CHANGELOG.md)；发布页见 [GitHub Releases](https://github.com/HuangDesign/shanye-minesweeper/releases)。
+
+## 参与贡献
+
+欢迎通过 [Issues](https://github.com/HuangDesign/shanye-minesweeper/issues) 反馈问题或提交 Pull Request。改动游戏逻辑前，建议先阅读 [产品需求](docs/PRD.md) 与 [验收对照](docs/ACCEPTANCE.md)。
 
 ## License
 
