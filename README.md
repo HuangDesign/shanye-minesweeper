@@ -4,6 +4,7 @@
 ![Render](https://img.shields.io/badge/render-Canvas%202D-2E7D32?style=flat-square)
 ![Version](https://img.shields.io/badge/version-v1.1-C8A96E?style=flat-square)
 ![Tests](https://img.shields.io/badge/tests-24%20unit%20%2B%2046%20interaction-2E7D32?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-2E7D32?style=flat-square)
 
 > 微信小游戏 · Canvas 2D · 单机扫雷 · 无需登录
 >
@@ -269,7 +270,9 @@ npm run preview:build
 
 ## License
 
-当前仓库暂未声明开源许可证。如需公开分发或商用，请先补充 `LICENSE`。
+本项目采用 [MIT License](LICENSE)，Copyright (c) 2026 HuangDesign。
+
+仓库内含的第三方软件（`plugins/kb-cockpit/vendor/force-graph.min.js`）遵循其自身 MIT 许可，版权归原作者所有；完整声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ---
 
