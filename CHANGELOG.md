@@ -2,6 +2,12 @@
 
 本项目遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)；变更记录格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)。
 
+## [Unreleased]
+
+### Fixed
+
+- 根目录补充 `game.js` / `game.json`，修复微信开发者工具「小游戏模式」打开仓库根目录时报 `game.json: 未找到 game.json 文件`；入口复用 `minigame/js/main.js`，音频前缀指向 `minigame/audio/`。
+
 ## [1.1.0] - 2026-11-16
 
 首个公开发布。

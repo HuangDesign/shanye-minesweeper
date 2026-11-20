@@ -1,8 +1,11 @@
 # 微信开发者工具运行说明
 
-## 当前状态：已经可以直接试运行
+## 当前状态：小程序模式 / 小游戏模式都能直接试运行
 
-仓库根目录现在带一个**微信小程序预览壳**，专门用于在“小程序模式”的微信开发者工具里试玩；它只包含一个承载 Canvas 的页面，游戏代码复用 [minigame/js/](../minigame/js/)。
+仓库根目录同时提供两种入口，均复用 [minigame/js/](../minigame/js/)：
+
+- **小程序模式**：`app.json` + `pages/index`，一个承载 Canvas 的页面；
+- **小游戏模式**：`game.json` + `game.js`，入口加载 `minigame/js/main.js`，音频前缀为 `minigame/audio/`。
 
 已在开发者工具（Stable 1.06.2504030，lib 3.17.6）模拟器验证：
 
@@ -22,7 +25,12 @@
 ## 直接在开发者工具试运行
 
 1. 开发者工具打开**仓库根目录**（当前项目 `shanye-devtools-preview`）。
-2. 点击「编译」；模拟器显示“扫雷 · 山林”模式选择页即成功。
+2. 按顶部当前模式点击「编译」：
+   - **小程序模式**：使用 `app.json` / `pages/index`；
+   - **小游戏模式**：使用根目录 `game.json` / `game.js`。
+3. 模拟器显示“扫雷 · 山林”模式选择页即成功。
+
+> 之前“小游戏模式报 game.json 未找到”的原因是根目录缺少小游戏入口；现已补齐根目录 `game.json` / `game.js`，并保留 `minigame/` 作为正式小游戏工程。
 3. 根目录配置：
    - [project.config.json](../project.config.json)：`compileType: "miniprogram"`，`appid: "touristappid"`；
    - [app.json](../app.json) / [app.js](../app.js)：小程序入口；
@@ -48,6 +56,10 @@
 如果新建小游戏项目仍被识别为小程序，通常是 AppID 不是小游戏类型，或公众平台服务类目不是“游戏”；需要更换 AppID/账号。此时仍可用根目录预览壳试玩。
 
 ## 常见错误
+
+### `game.json: 未找到 game.json 文件`（小游戏模式）
+
+根目录缺少小游戏入口。当前仓库根目录已有 [`game.json`](../game.json) 与 [`game.js`](../game.js)；确认打开的是**仓库根目录**后重新编译。若仍失败，改用 [`minigame/`](../minigame/) 作为正式小游戏项目。
 
 ### `app.json is not found` / `app.json: 在项目根目录未找到`
 

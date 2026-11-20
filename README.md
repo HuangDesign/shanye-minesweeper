@@ -50,10 +50,10 @@
 
 | 形态 | 目录 | 配置 | 用途 |
 | --- | --- | --- | --- |
-| **微信小程序预览壳** | 仓库根目录 | `compileType: "miniprogram"`，`touristappid` | 在“小程序模式”的微信开发者工具里直接试玩，无需小游戏 AppID |
+| **根目录试玩入口** | 仓库根目录 | 小程序模式：`app.json` + `pages/`；小游戏模式：`game.js` + `game.json` | 开发者工具当前是哪种模式，都能直接编译试玩 |
 | **正式小游戏工程** | [`minigame/`](minigame/) | `compileType: "game"`，需小游戏 AppID | 发布、真机调试、分享、云函数 |
 
-> 预览壳只负责承载 Canvas，所有游戏界面仍然是 Canvas；正式发布请使用 `minigame/`。
+> 根目录的两种入口都复用 `minigame/js/` 游戏内核；正式发布仍以 `minigame/` 为准。所有游戏界面都是 Canvas。
 
 ---
 
@@ -101,13 +101,23 @@ node tools/serve.js
 | `?qr=1` / `?share=0` / `?scene=1155` | 模拟二维码 / 分享降级 / 朋友圈单页 |
 | `?qrscene=p5` | 模拟扫码进入，提示“好友通过了第 5 关” |
 
-### 2. 微信开发者工具直接试玩（根目录预览壳）
+### 2. 微信开发者工具直接试玩（根目录两种模式）
 
-1. 用微信开发者工具打开**仓库根目录**；
-2. 顶部保持“小程序模式”，点击「编译」；
-3. 模拟器出现“扫雷 · 山林”模式选择页即可试玩。
+用微信开发者工具打开**仓库根目录**，按当前模式编译：
 
-无需新建项目、无需小游戏 AppID。根目录 [`project.config.json`](project.config.json) 已配置 `compileType: "miniprogram"` 和 `touristappid`。
+**小程序模式**
+
+1. 顶部选择「小程序模式」，点击「编译」；
+2. 入口为 `app.json` + `pages/index`，模拟器出现模式选择页即可试玩；
+3. 无需小游戏 AppID。
+
+**小游戏模式**
+
+1. 顶部选择「小游戏模式」，点击「编译」；
+2. 根目录已提供 [`game.json`](game.json) 和 [`game.js`](game.js)，入口会加载 `minigame/js/main.js`，音频前缀指向 `minigame/audio/`；
+3. 模拟器出现模式选择页即可试玩。
+
+> 如果小游戏模式提示 AppID 类型不符，请改用 `minigame/` 作为正式小游戏工程，或在开发者工具中切回小程序模式。根目录 `project.config.json` 的 AppID 可替换为你自己的小程序 AppID。
 
 ### 3. 正式小游戏工程
 
@@ -192,9 +202,10 @@ npm install
 
 ```text
 .
-├── app.js / app.json / app.wxss   # 根目录小程序预览壳
-├── pages/index/                   # Canvas 宿主页（仅此页面用 WXML/WXSS）
-├── project.config.json            # 预览壳：compileType=miniprogram
+├── app.js / app.json / app.wxss   # 根目录小程序模式入口
+├── game.js / game.json            # 根目录小游戏模式入口（复用 minigame/js）
+├── pages/index/                   # 小程序模式 Canvas 宿主页
+├── project.config.json            # 根目录项目配置（compileType=miniprogram）
 ├── sitemap.json
 │
 ├── minigame/                      # ★ 正式小游戏工程（发布用）
@@ -223,7 +234,7 @@ npm install
 └── plugins/kb-cockpit/            # 知识库侧栏插件（非游戏运行文件）
 ```
 
-根目录预览壳只负责承载 Canvas，`minigame/` 保持纯小游戏工程；预览、测试、文档、`raw/`、`wiki/`、`plugins/` 不会被根目录小程序的 `packOptions.ignore` 打包进小游戏包。
+根目录的小程序入口只负责承载 Canvas，小游戏入口只负责传入资源前缀；`minigame/` 保持纯小游戏工程。预览、测试、文档、`raw/`、`wiki/`、`plugins/` 不会被根目录小程序的 `packOptions.ignore` 打包进小游戏包。
 
 ---
 
